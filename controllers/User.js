@@ -27,7 +27,7 @@ exports.create = async (req, res) => {
 // Retrieve all users from the database.
 exports.findAll = async (req, res) => {
     try {
-        const user = await UserModel.find();
+        const user = await userModel.find();
         res.status(200).json(user);
     } catch(error) {
         res.status(404).json({message: error.message});
@@ -37,7 +37,7 @@ exports.findAll = async (req, res) => {
 // Find a single User with an id
 exports.findOne = async (req, res) => {
     try {
-        const user = await UserModel.findById(req.params.id);
+        const user = await userModel.findById(req.params.id);
         res.status(200).json(user);
     } catch(error) {
         res.status(404).json({ message: error.message});
@@ -54,7 +54,7 @@ exports.update = async (req, res) => {
     
     const id = req.params.id;
     
-    await UserModel.findByIdAndUpdate(id, req.body, { useFindAndModify: false }).then(data => {
+    await userModel.findByIdAndUpdate(id, req.body, { useFindAndModify: false }).then(data => {
         if (!data) {
             res.status(404).send({
                 message: `User not found.`
@@ -71,7 +71,7 @@ exports.update = async (req, res) => {
 
 // Delete user with the specified id in the request
 exports.delete = async (req, res) => {
-    await UserModel.findByIdAndRemove(req.params.id).then(data => {
+    await userModel.findByIdAndRemove(req.params.id).then(data => {
         if (!data) {
           res.status(404).send({
             message: `User not found.`

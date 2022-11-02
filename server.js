@@ -4,9 +4,8 @@ bodyParser = require('body-parser'),
 cors = require('cors'),
 mongoose = require('mongoose');
 
-var mongoDatabase = 'mongodb+srv://x_mod_i:dipanshu@123@cluster0.astbkid.mongodb.net/test';
+var mongoDatabase = 'mongodb+srv://x_mod_i:dipanshu123@cluster0.tsalepk.mongodb.net/Userdb?retryWrites=true&w=majority';
 
-const app = express();
 mongoose.Promise = global.Promise;
 
 // Connecting db
@@ -21,8 +20,11 @@ mongoose.connect(mongoDatabase, {
     }
 );
 
+const app = express();
+
 // All the express routes
-const userRoutes = require('./routes/userRoutes');
+const userRoute = require('./routes/User');
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // Convert incoming data to JSON format
 app.use(bodyParser.json());
@@ -34,9 +36,9 @@ app.use(cors());
 const port = process.env.PORT || 4000;
 
 // Routes Configuration
-app.use('/users', userRoutes);
+app.use('/User', userRoute);
 
 // Staring our express server
-const server = app.listen(port, function() {
+app.listen(port, function() {
     console.log('Server Listening On Port : ' + port);
 });
