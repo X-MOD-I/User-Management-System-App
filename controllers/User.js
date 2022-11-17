@@ -30,8 +30,29 @@ exports.create = async (req, res) => {
 // Retrieve all users from the database.
 exports.findAll = async (req, res) => {
   try {
-    const user = await userModel.find();
-    res.status(200).json(user);
+    // Adding Pagination and sorting
+    let { page, pageSize, sort } = req.query;
+
+    // If the page is not applied in query.
+    if (!page) {
+      // Make the Default value one.
+      page = 1;
+    }
+
+    if (!pageSize) {
+      pageSize = 2;
+    }
+
+    //  We have to make it integer because query parameter passed is string
+    const limit = parseInt(pageSize);
+
+    // We pass 1 for sorting data in ascending order using Name
+    const user = await userModel.find().sort({ Name: 1 }).limit(limit).skip((parseInt(page)-1)*parseInt(pageSize));
+    res.status(200).send({
+      page,
+      pageSize,
+      Info: user,
+    });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
